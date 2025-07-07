@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cat_app/models/cat_app_model.dart';
 import 'package:flutter_cat_app/models/single_cat_model.dart';
 import 'package:flutter_cat_app/screens/details_screen.dart';
 import 'package:flutter_cat_app/services/single_cat_services.dart';
 
 class CatCard extends StatefulWidget {
-  final String id;
-  final String name;
-  final String origin;
-  final String temperament;
-  final String description;
+  final CatAppModel item;
   const CatCard({
     super.key,
-    required this.id,
-    required this.name,
-    required this.origin,
-    required this.temperament,
-    required this.description,
+    required this.item,
   });
 
   @override
@@ -25,7 +18,7 @@ class CatCard extends StatefulWidget {
 class _CatCardState extends State<CatCard> {
   @override
   Widget build(BuildContext context) {
-    List<String> values = widget.temperament.split(",");
+    List<String> values = widget.item.temperament.split(",");
     final firstAttribute = values[0];
     final TextTheme textTheme = Theme.of(
       context,
@@ -41,7 +34,7 @@ class _CatCardState extends State<CatCard> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0),
-                  child: Text(widget.name, style: TextStyle(
+                  child: Text(widget.item.name, style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16
                   )),
@@ -49,14 +42,14 @@ class _CatCardState extends State<CatCard> {
               ],
             ),
             SizedBox(height: 12),
-            imageList(widget.id),
+            imageList(widget.item.id),
             SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 24),
-                  child: Text(widget.origin, style: textTheme.bodyLarge),
+                  child: Text(widget.item.origin, style: textTheme.bodyLarge),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(right: 24),
@@ -91,11 +84,11 @@ class _CatCardState extends State<CatCard> {
                     MaterialPageRoute(
                       builder:
                           (context) => DetailsScreen(
-                            name: widget.name,
+                            name: widget.item.name,
                             image: imageUrl,
-                            origin: widget.origin,
-                            temperament: widget.temperament,
-                            description: widget.description,
+                            origin: widget.item.origin,
+                            temperament: widget.item.temperament,
+                            description: widget.item.description,
                           ),
                     ),
                   );

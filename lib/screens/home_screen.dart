@@ -11,7 +11,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late String searchValue = '';
+  final TextEditingController _controller = TextEditingController();
+  late String _searchValue = '';
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             child: Center(
               child: TextField(
+                controller: _controller,
                 decoration: InputDecoration(
                   hintText: "Search by name",
                   suffixIcon: Icon(Icons.search),
@@ -44,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 onChanged: (value) {
                   setState(() {
-                    searchValue = value;
+                    _searchValue = _controller.text;
                   });
                 },
               ),
@@ -58,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   FutureBuilder<List<CatAppModel>> bodyList() {
     return FutureBuilder(
-      future: fetchCats(searchValue),
+      future: fetchCats(_searchValue),
       builder: (context, AsyncSnapshot<List<CatAppModel>> snapShot) {
         if (snapShot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();
@@ -72,11 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: CatCard(
-                    id: snapShot.data![index].id,
-                    name: snapShot.data![index].name,
-                    origin: snapShot.data![index].origin,
-                    temperament: snapShot.data![index].temperament,
-                    description: snapShot.data![index].description,
+                    item: snapShot.data![index],
                   ),
                 );
               },
